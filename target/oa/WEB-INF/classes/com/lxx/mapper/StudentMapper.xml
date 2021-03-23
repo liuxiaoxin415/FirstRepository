@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxx.mapper.StudentMapper">
+
+    <!--public int getTotolCount(Map<String,Object> map);-->
+    <select id="getTotolCount" resultType="java.lang.Integer">
+        SELECT COUNT(id) from t_student WHERE del = 0
+        <if test="name!=null and name!= '' ">
+            and name like #{name}
+        </if>
+        <if test="classID!=0">
+            and class_id = #{classID}
+        </if>
+    </select>
+
+    <!--public List<Student> getStudents(Map<String,Object> map);-->
+    <select id="getStudents" resultMap="studentMape">
+        SELECT s.*,c.class_name from t_student s JOIN t_class c on s.class_id = c.id and s.del = 0
+        <if test="name!=null and name!= '' ">
+            and s.name like #{name}
+        </if>
+        <if test="classID!=0">
+            and s.class_id = #{classID}
+        </if>
+        limit #{pageStart},#{pageSize}
+    </select>
+
+    <resultMap id="studentMape" type="Student">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="sex" column="sex"></result>
+        <result property="email" column="email"></result>
+        <result property="phone" column="phone"></result>
+        <association property="cla" javaType="com.lxx.pojo.Cla">
+            <result property="className" column="class_name"></result>
+        </association>
+    </resultMap>
+
+    <!--public List<Student> getExcelStudents(Map<String,Object> map);-->
+    <select id="getExcelStudents" resultMap="studentMape">
+        SELECT s.*,c.class_name from t_student s JOIN t_class c on s.class_id = c.id and s.del = 0
+        <if test="name!=null and name!= '' ">
+            and s.name like #{name}
+        </if>
+        <if test="classID!=0">
+            and s.class_id = #{classID}
+        </if>
+    </select>
+
+</mapper>

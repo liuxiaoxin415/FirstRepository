@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxx.mapper.EmpMapper">
+
+    <!--public Emp login(Emp emp);-->
+    <select id="login" resultType="Emp">
+        select * from t_emp where no = #{no} and pass = #{pass} and del=0;
+    </select>
+
+    <!--public int addEmp(Emp emp);-->
+    <insert id="addEmp">
+        insert into t_emp values
+        (null,#{no},'888888',#{name},#{did},1,#{sex},#{email},#{qq},#{phone},#{createdate},#{photo},0)
+    </insert>
+
+    <!--public int getTotolCount();-->
+    <select id="getTotolCount" resultType="int">
+        SELECT COUNT(name) from t_emp GROUP BY del HAVING del = 0
+    </select>
+
+    <!--public List<Emp> getEmps(@Param("pageIndex")int pageIndex, @Param("pageSize")int pageSize);-->
+    <select id="getEmps" resultMap="EmpMap">
+        SELECT e.*,d.dname from t_emp e JOIN t_depart d on e.did = d.id limit #{pageIndex},#{pageSize}
+    </select>
+
+    <resultMap id="EmpMap" type="com.lxx.pojo.Emp">
+        <id column="id" property="id"></id>
+        <result column="no" property="no"></result>
+        <result column="pass" property="pass"></result>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="email" property="email"></result>
+        <result column="qq" property="qq"></result>
+        <result column="phone" property="phone"></result>
+        <result column="createdate" property="createdate"></result>
+        <result column="photo" property="photo"></result>
+        <association property="depart" javaType="Depart">
+            <result column="dname" property="dname"></result>
+        </association>
+    </resultMap>
+
+    <!--public Map<Integer, String> getEmpInfo();-->
+    <select id="getEmpInfo" resultType="com.lxx.util.TongJi">
+        SELECT count(e.id) as value ,d.dname as name from t_emp e JOIN t_depart d ON e.did = d.id GROUP BY d.id
+    </select>
+
+</mapper>

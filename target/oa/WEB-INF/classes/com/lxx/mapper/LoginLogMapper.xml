@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxx.mapper.LoginLogMapper">
+
+    <!--public int addLoginLog(Loginlog loginlog);-->
+    <insert id="addLoginLog">
+        insert into t_loginlog values (null, #{ip}, #{no}, now(), #{location})
+    </insert>
+
+    <!--public List<Loginlog> getLastLoginLog(String no);-->
+    <select id="getLastLoginLog" resultType="com.lxx.pojo.Loginlog">
+        select * from t_loginlog where no = #{no} order by createtime desc limit 0,10
+    </select>
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxx.mapper.DeptMapper">
+
+    <!--public int addDept(Depart depart);-->
+    <insert id="addDept">
+        insert into t_depart values (null, #{dname}, now(), 0)
+    </insert>
+
+    <!--public int getTotolCount();-->
+    <select id="getTotolCount" resultType="int">
+        SELECT count(dname) from t_depart GROUP BY del HAVING del = 0
+    </select>
+
+    <!--    public List<Depart> getDepts(@Param("pageIndex")int pageStart, @Param("pageSize")int pageSize);-->
+    <select id="getDepts" resultType="Depart">
+        select * from t_depart where del = 0 limit #{pageIndex},#{pageSize}
+    </select>
+
+    <!--public int delDept(int id);-->
+    <update id="delDept">
+        update t_depart set del = 1 where id = #{id}
+    </update>
+
+    <!--public List<Depart> findDepts();-->
+    <select id="findDepts" resultType="Depart">
+        select * from t_depart where del = 0
+    </select>
+
+</mapper>
